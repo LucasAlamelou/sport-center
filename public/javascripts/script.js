@@ -287,7 +287,7 @@ function userUpdate(event) {
   })
     .then((response) => {
       response.json().then((result) => {
-        console.log(result.firstName);
+        window.location.reload();
       });
     })
     .catch((error) => {
