@@ -79,6 +79,7 @@ if (scrollToTop) {
   });
 }
 
+const modalGlobal = document.getElementById('modal-global');
 const selectUser = document.getElementById('userCreate');
 const optionCustomer = document.getElementById('optionCustomer');
 const optionCoach = document.getElementById('optionCoach');
@@ -275,7 +276,6 @@ function userUpdate(event) {
   const formData = new FormData(formUserUpdate);
   const data = {};
   formData.forEach((value, key) => (data[key] = value));
-  console.log(data);
   // Lance la requête
   fetch(`/userUpdate`, {
     method: 'POST',
@@ -287,10 +287,56 @@ function userUpdate(event) {
   })
     .then((response) => {
       response.json().then((result) => {
-        console.log(result.firstName);
+        window.location.reload();
       });
     })
     .catch((error) => {
       alert('Erreur : ' + error.message);
     });
+}
+
+/** ---- Envoie form User Update ---- */
+const formCoachUpdate = document.getElementById('coach-update');
+const buttonFormCoachUpdate = document.getElementById('btn-form-coach-update');
+if (buttonFormCoachUpdate) {
+  buttonFormCoachUpdate.addEventListener('click', coachUpdate, false);
+}
+function coachUpdate(event) {
+  event.preventDefault();
+  const formData = new FormData(formCoachUpdate);
+  const data = {};
+  formData.forEach((value, key) => (data[key] = value));
+  console.log(data);
+  // Lance la requête
+  fetch(`/coachUpdate`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/x-www-form-urlencoded'
+    },
+  })
+    .then((response) => {
+      response.json().then((result) => {
+        if (result === true) {
+          const modalBody = document.getElementById('modal-body-insert');
+          modalGlobal.classList.add('show');
+          modalGlobal.style.display = 'block';
+          modalBody.innerHTML =
+            '<p style="font-weight: 700;">Modification validé !</p>';
+        } else if (result === false) {
+          console.error('Erreur lors de la modification');
+        }
+
+        //window.location.reload();
+      });
+    })
+    .catch((error) => {
+      alert('Erreur : ' + error.message);
+    });
+}
+
+function closeModal() {
+  modalGlobal.classList.remove('show');
+  modalGlobal.style.display = 'none';
 }
