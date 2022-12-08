@@ -1,0 +1,289 @@
+{% extends "base.twig" %}
+{% block username %}
+	{{CustomerInfo[0].user.firstName}}
+	{{CustomerInfo[0].user.lastName}}
+{% endblock %}
+{% block levelOfusername %}
+	{{CustomerInfo[0].level}}
+{% endblock %}
+{% block body %}
+	<div class="container-fluid">
+
+		<div id="modal">
+			<div class="modal fade" id="modalUdpate" tabindex="-1" aria-labelledby="" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="titleModal">Modifier un cours</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<form class="slotCreate" id="slotUpdate" action="/slotUpdate">
+							<div class="modal-body">
+								<div class="mb-3">
+									<select class="form-select" name="_id" aria-label="Choisir le slot a modifier" id="select-slots">
+										{% for slots in SlotList %}
+											{% for slot in slots %}
+												<option id="{{slot._id}}" value="{{slot._id}}">{{slot.label}}</option>
+											{% endfor %}
+										{% endfor %}
+									</select>
+								</div>
+								<div class="mb-3">
+									<label for="nameSlot" class="form-label">Nom de votre cours</label>
+									<input type="text" class="form-control" id="nameSlot" name="label">
+								</div>
+								<div class="mb-3">
+									<div class="col-sm-6 mb-3 mb-sm-0">
+										<label for="date" class="form-label">L'heure du début</label>
+										<input class="form-control form-control-user" type="date" id="date" placeholder="" name="date">
+									</div>
+									<div class="col-sm-6 mb-3 mb-sm-0">
+										<label for="startHour" class="form-label">L'heure du début</label>
+										<input class="form-control form-control-user" type="text" id="startHour" placeholder="10h00" name="startHour">
+									</div>
+									<div class="col-sm-6">
+										<label for="endHour" class="form-label">L'heure du fin</label>
+										<input class="form-control form-control-user" type="text" id="endHour" placeholder="11h00" name="endHour">
+									</div>
+								</div>
+								<div class="mb-3">
+									<label for="peopleLimit" class="form-label">Nombre de place limite</label>
+									<input class="form-control form-control-user" type="number" id="peopleLimit" placeholder="" name="peopleLimit">
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-primary" type="submit" formmethod="POST">Modifier un slot</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<h3 class="text-dark mb-4">Profile
+			{{CustomerInfo[0].user.firstName}}
+			{{CustomerInfo[0].user.lastName}}</h3>
+		<div class="row mb-3">
+			<div class="col-lg-4">
+				<div class="card mb-3">
+					<div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" alt="profile" src="images/dogs/image2.jpeg" width="160" height="160">
+						<div class="mb-3">
+							<button class="btn btn-primary btn-sm" style='display:none;' type="button">Changer de Photo</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-8">
+				<div class="row mb-3 d-none">
+					<div class="col">
+						<div class="card text-white bg-primary shadow">
+							<div class="card-body">
+								<div class="row mb-2">
+									<div class="col">
+										<p class="m-0">Peformance</p>
+										<p class="m-0">
+											<strong>65.2%</strong>
+										</p>
+									</div>
+									<div class="col-auto">
+										<i class="fas fa-rocket fa-2x"></i>
+									</div>
+								</div>
+								<p class="text-white-50 small m-0">
+									<i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card text-white bg-success shadow">
+							<div class="card-body">
+								<div class="row mb-2">
+									<div class="col">
+										<p class="m-0">Peformance</p>
+										<p class="m-0">
+											<strong>65.2%</strong>
+										</p>
+									</div>
+									<div class="col-auto">
+										<i class="fas fa-rocket fa-2x"></i>
+									</div>
+								</div>
+								<p class="text-white-50 small m-0">
+									<i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<div class="card shadow mb-3">
+							<div class="card-header py-3">
+								<p class="text-primary m-0 fw-bold">Paramètre utilisateur</p>
+							</div>
+							<div class="card-body">
+								<form action="/userUpdate" id="user-update">
+									<div class="row">
+										<div class="col">
+											<div class="mb-3">
+												<label class="form-label" for="username">
+													<strong>Username</strong><br></label><input class="form-control" type="text" id="username" placeholder="{{CustomerInfo[0].user.username}}" name="username"></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="mb-3">
+												<label class="form-label" for="email">
+													<strong>Adresse email</strong><br></label><input class="form-control" type="email" id="email" placeholder="{{CustomerInfo[0].user.email}}" name="email"></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="mb-3">
+												<label class="form-label" for="first_name">
+													<strong>Prénom</strong><br></label><input class="form-control" type="text" id="firstName" placeholder="{{CustomerInfo[0].user.firstName}}" name="firstName"></div>
+										</div>
+										<div class="col">
+											<div class="mb-3">
+												<label class="form-label" for="last_name">
+													<strong>Nom de famille</strong><br></label><input class="form-control" type="text" id="lastName" placeholder="{{CustomerInfo[0].user.lastName}}" name="lastName"></div>
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="mb-3">
+											<label class="form-label" for="first_name">
+												<strong>Date de naissance&nbsp;</strong><br></label><input class="form-control" id="dateOfBirth" placeholder="{{CustomerInfo[0].user.dateOfBirth.toLocaleDateString('en-EN',{ year: numeric,month: numeric, day: numeric })}}" name="dateOfBirth"></div>
+										<button id="btn-user-update" class="btn btn-primary btn-sm" type="submit" formmethod="POST">Sauvegarder</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		{% if role == 'customer' %}
+			<div class="card shadow mb-5">
+				<div class="card-header py-3">
+					<p class="text-primary m-0 fw-bold">Abonnement</p>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+							<form action="/subscriptionCreate" method="post">
+								<div class="mb-3">
+									<label class="form-label" for="Abonnement basic">
+										<strong>Abonnement</strong><br/></label>
+									<div class="mb-3">
+										<label for="endDateHelp">Selectionner une date de fin d'abonnement</label>
+										<input class="form-control form-control-user" type="date" id="endDate" aria-describedby="endDateHelp" placeholder="Enter date de fin" name="endDate">
+									</div>
+									<div class="mb-3">
+										<div class="form-check">
+											<label for="paymendMethod">Selectionner un mode paiement</label>
+											<input class="form-check-input" type="radio" name="paymendMethod" id="paymendMethod" checked>
+											<label class="form-check-label" for="paymendMethod">
+												CB
+											</label>
+										</div>
+									</div>
+									<div class="mb-3">
+										<label for="amoundPaid">Date de prelevement</label>
+										<input class="form-control form-control-user" type="number" id="amoundPaid" aria-describedby="amoundPaidHelp" placeholder="Enter une date de paiement" name="amoundPaid" min="1" max="30">
+									</div>
+									<div class="mb-3">
+										<button class="btn btn-primary btn-sm" type="submit">Abonnement</button>
+									</div>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		{% endif %}
+
+		{% if role == "coach" %}
+			<div class="card shadow mb-5">
+				<div class="card-header py-3 d-flex justify-content-between">
+					<p class="text-primary m-0 fw-bold">Your Slots</p>
+					<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalUdpate">Modifier</button>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+							<table class="table my-0" id="dataTable">
+								<thead>
+									<tr style="color: var(--bs-gray-900);">
+										<th>Id</th>
+										<th>Label</th>
+										<th>Start</th>
+										<th>End</th>
+										<th>peopleLimit</th>
+										<th>date</th>
+										<th>Nombre d'inscrit</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for slots in SlotList %}
+										{% for slot in slots %}
+											<tr>
+												<td>{{slot._id}}</td>
+												<td>{{slot.label}}</td>
+												<td>{{slot.startHour}}</td>
+												<td style="font-weight: bold;">{{slot.startEnd}}</td>
+												<td>{{slot.peopleLimit}}</td>
+												<td>{{ slot.date.toLocaleDateString('fr-FR',{day: numeric, month: numeric , year: numeric}) }}</td>
+												<td>
+													{% set nbCustomer = 0 %}
+													{% for customer in slot.customer %}
+														{{nbCustomer + 1}}
+													{% endfor %}
+
+												</td>
+												<td>
+													<form action="/slotDelete">
+														<input value="{{slot._id}}" name="_id" type="hidden">
+														<button class="btn btn-danger" type="submit" formmethod="POST">Supprimer</button>
+													</form>
+												</td>
+
+											</tr>
+										{% endfor %}
+
+
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card shadow mb-5">
+				<div class="card-header py-3">
+					<p class="text-primary m-0 fw-bold">Coach</p>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+							<form action="/coachUpdate" method="post">
+								<div class="mb-3">
+									<label for="endDateHelp">Bio</label>
+									<input class="form-control form-control-user" type="text" id="bio" aria-describedby="bioHelp" placeholder="{{CustomerInfo[0].bio}}" name="bio" required>
+								</div>
+								<div class="mb-3">
+									<label for="amoundPaid">Discipline</label>
+									<input class="form-control form-control-user" type="text" id="discipline" aria-describedby="disciplineHelp" placeholder="{{CustomerInfo[0].discipline}}" name="discipline" required>
+								</div>
+								<div class="mb-3">
+									<button class="btn btn-primary btn-sm">Modifier</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	{% endblock %}

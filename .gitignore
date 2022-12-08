@@ -1,0 +1,8 @@
+node_modules
+# Ignorer tous les fichiers .log
+*.log
+/.env
+*.env
+.env
+bin
+app.js

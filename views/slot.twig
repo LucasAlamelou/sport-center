@@ -1,0 +1,150 @@
+{% extends "base.twig" %}
+
+{% block title %}
+	<title>Slot</title>
+{% endblock %}
+{% block username %}
+	{{req.session.user}}
+	{{lastName}}
+{% endblock %}
+{% block levelOfusername %}
+	{{level}}
+{% endblock %}
+{% block body %}
+	<div class="container-fluid">
+		<div id="modal-slot">
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter un cours</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<form class="slotCreate" id="slotCreate" action="/slotCreate">
+							<div class="modal-body">
+								<div class="mb-3">
+									<label for="nameSlot" class="form-label">Nom de votre cours</label>
+									<input type="text" class="form-control" id="nameSlot" name="label">
+								</div>
+								<div class="mb-3">
+									<div class="col-sm-6 mb-3 mb-sm-0">
+										<label for="date" class="form-label">L'heure du début</label>
+										<input class="form-control form-control-user" type="date" id="date" placeholder="" name="date">
+									</div>
+									<div class="col-sm-6 mb-3 mb-sm-0">
+										<label for="startHour" class="form-label">L'heure du début</label>
+										<input class="form-control form-control-user" type="text" id="startHour" placeholder="10h00" name="startHour">
+									</div>
+									<div class="col-sm-6">
+										<label for="endHour" class="form-label">L'heure du fin</label>
+										<input class="form-control form-control-user" type="text" id="endHour" placeholder="11h00" name="endHour">
+									</div>
+								</div>
+								<div class="mb-3">
+									<label for="peopleLimit" class="form-label">Nombre de place limite</label>
+									<input class="form-control form-control-user" type="number" id="peopleLimit" placeholder="" name="peopleLimit">
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-primary" type="submit" formmethod="POST">Ajouter un slot</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h3 class="text-dark mb-4">Cours diponible</h3>
+		<div class="card shadow">
+			<div class="card-header py-3 d-flex justify-content-between">
+				<p class="text-primary m-0 fw-bold">Cours</p>
+				{% if role == 'coach' %}
+					<button class="btn btn-primary d-block" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter un cours</button>
+				{% endif %}
+			</div>
+			<div class="card-body">
+				<div class="row d-none">
+					<div class="col-md-6 text-nowrap">
+						<div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+							<label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
+									<option value="10" selected="">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+								</select>&nbsp;</label>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="text-md-end dataTables_filter" id="dataTable_filter">
+							<label class="form-label"></label>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive table mt-2 table-striped" id="dataTable" role="grid" aria-describedby="dataTable_info">
+					<table class="table my-0" id="dataTable">
+						<thead>
+							<tr style="color: var(--bs-gray-900);">
+								<th style="color: var(--bs-dark);">Coach</th>
+								<th>Spécialité</th>
+								<th>Cours</th>
+								<th>Nb place</th>
+								<th>Date</th>
+								<th>Heure</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for slot in SlotList %}
+								<tr>
+									<td id="coach">{{slot.coach._id}}</td>
+									<td>{{slot.coach.discipline}}</td>
+									<td style="font-weight: bold;">{{slot.label}}</td>
+									<td>{{slot.peopleLimit}}</td>
+									<td>{{ slot.date.toLocaleDateString('fr-FR',{day: numeric, month: numeric , year: numeric}) }}</td>
+									<td>{{slot.startHour}}</td>
+									<td>
+										{% if role == 'customer' %}
+											<form action="/slotBook">
+												<input class="form-control form-control-user" type="text" id="slot" aria-describedby="slotHelp" placeholder="slot" name="slot" value="{{slot._id}}" style="display:none;">
+												<button class="btn btn-primary" id="slot-reserved" type="submit" formmethod="POST" style="background: var(--bs-primary);width: 100.8594px;height: 30px;margin: -1px;padding: 0px 12px;">S'inscrire</button>
+											</form>
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="row d-none">
+			<div class="col-md-6 align-self-center">
+				<p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite"></p>
+			</div>
+			<div class="col-md-6">
+				<nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+					<ul class="pagination">
+						<li class="page-item disabled">
+							<a class="page-link" aria-label="Previous" href="#">
+								<span aria-hidden="true">«</span>
+							</a>
+						</li>
+						<li class="page-item active">
+							<a class="page-link" href="#">1</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">2</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" href="#">3</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" aria-label="Next" href="#">
+								<span aria-hidden="true">»</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div></div>{% endblock %}

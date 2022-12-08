@@ -1,0 +1,266 @@
+{% extends "base.twig" %}
+
+{% block title %}
+	<title>Manager</title>
+{% endblock %}
+
+{% block username %}MANAGER
+{% endblock %}
+
+
+{% block body %}
+	<div class="container-fluid">
+		<div class="row mb-3">
+			<div class="row">
+				<div class="col">
+					<div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+						<table class="table my-0" id="dataTable">
+							<thead>
+								<tr style="color: var(--bs-gray-900);">
+									<th style="color: var(--bs-dark);">Users</th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th>token</th>
+									<th>id</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for user in listUser %}
+									<tr>
+										<td>{{user.firstName}}</td>
+										<td>{{user.lastName}}</td>
+										<td style="font-weight: bold;">{{user.email}}</td>
+										<td>{{ user.dateOfBirth.toLocaleDateString('fr-FR',{day: numeric, month: numeric , year: numeric}) }}</td>
+										<td>{{user.token}}</td>
+										<td>{{user._id}}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+							<table class="table my-0" id="dataTable">
+								<thead>
+									<tr style="color: var(--bs-gray-900);">
+										<th style="color: var(--bs-dark);">Customer</th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for user in listCustomer %}
+										<tr>
+											<td>{{user.user.firstName}}</td>
+											<td>{{user.user.lastName}}</td>
+											<td style="font-weight: bold;">{{user.level}}</td>
+											<td>{{user.subscriptions}}</td>
+											<td></td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col">
+							<div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+								<table class="table my-0" id="dataTable">
+									<thead>
+										<tr style="color: var(--bs-gray-900);">
+											<th style="color: var(--bs-dark);">Coachs</th>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for user in listCoach %}
+											<tr>
+												<td>{{user.user.firstName}}</td>
+												<td>{{user.user.lastName}}</td>
+												<td style="font-weight: bold;">{{user.discipline}}</td>
+												<td>{{user.bio}}</td>
+												<td></td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<div class="card shadow mb-3">
+									<div class="card-header py-3">
+										<p class="text-primary m-0 fw-bold">User create</p>
+									</div>
+									<div class="card-body">
+										<form action="/userCreate">
+											<div class="row">
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="email">
+															<strong>Adresse email</strong><br></label><input class="form-control" type="email" id="email" placeholder="" name="email"></div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="first_name">
+															<strong>Prénom</strong><br></label><input class="form-control" type="text" id="firstName" placeholder="" name="firstName"></div>
+												</div>
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="last_name">
+															<strong>Nom de famille</strong><br></label><input class="form-control" type="text" id="lastName" placeholder="" name="lastName"></div>
+												</div>
+											</div>
+											<div class="col">
+												<div class="mb-3">
+													<label class="form-label" for="password">
+														<strong>Mot de passe</strong><br></label><input class="form-control" type="password" id="password" placeholder="" name="passeword"></div>
+											</div>
+											<div class="mb-3">
+												<div class="mb-3">
+
+													<label class="form-label" for="first_name">
+														<strong>Date de naissance&nbsp;</strong><br></label><input class="form-control" id="dateOfBirth" placeholder="" name="dateOfBirth"></div>
+												<button class="btn btn-primary btn-sm" type="submit" formmethod="POST">Créer</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<div class="card shadow mb-3">
+									<div class="card-header py-3">
+										<p class="text-primary m-0 fw-bold">Coach create</p>
+									</div>
+									<div class="card-body">
+										<form action="/coachCreate">
+											<div class="row">
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="email">
+															<strong>Adresse email</strong><br></label><input class="form-control" type="email" id="email" placeholder="" name="email"></div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="first_name">
+															<strong>Prénom</strong><br></label><input class="form-control" type="text" id="firstName" placeholder="" name="firstName"></div>
+												</div>
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="last_name">
+															<strong>Nom de famille</strong><br></label><input class="form-control" type="text" id="lastName" placeholder="" name="lastName"></div>
+												</div>
+											</div>
+											<div class="col">
+												<div class="mb-3">
+													<label class="form-label" for="password">
+														<strong>Mot de passe</strong><br></label><input class="form-control" type="password" id="password" placeholder="" name="password"></div>
+											</div>
+											<div class="mb-3">
+												<div class="mb-3">
+
+													<label class="form-label" for="first_name">
+														<strong>Date de naissance&nbsp;</strong><br></label><input class="form-control" id="dateOfBirth" placeholder="" name="dateOfBirth"></div>
+												<button class="btn btn-primary btn-sm" type="submit" formmethod="POST">Créer</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<div class="card shadow mb-3">
+									<div class="card-header py-3">
+										<p class="text-primary m-0 fw-bold">User delete</p>
+									</div>
+									<div class="card-body">
+										<form action="/userDelete" id="userDelete">
+											<div class="row">
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="id">
+															<strong>Id de l'utilisateur</strong><br>
+														</label>
+														<input class="form-control" type="text" id="" placeholder="Id de l'utilisateur à supprimer" name="_id">
+													</div>
+												</div>
+											</div>
+											<button class="btn btn-primary btn-sm" type="submit" formmethod="POST" id="userDeleteButton">Supprimer l'utilisateur</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<div class="card shadow mb-3">
+									<div class="card-header py-3">
+										<p class="text-primary m-0 fw-bold">Customer delete</p>
+									</div>
+									<div class="card-body">
+										<form action="/customerDelete" id="customerDelete">
+											<div class="row">
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="id">
+															<strong>Id du customer</strong><br></label><input class="form-control" type="text" id="" placeholder="Id de l'utilisateur à supprimer" name="_id"></div>
+												</div>
+											</div>
+											<button class="btn btn-primary btn-sm" type="submit" formmethod="POST" id="customerDeleteButton">Supprimer le customer</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col">
+								<div class="card shadow mb-3">
+									<div class="card-header py-3">
+										<p class="text-primary m-0 fw-bold">Coach delete</p>
+									</div>
+									<div class="card-body">
+										<form action="/coachDelete" id="coachDelete">
+											<div class="row">
+												<div class="col">
+													<div class="mb-3">
+														<label class="form-label" for="id">
+															<strong>Id du customer</strong><br></label><input class="form-control" type="text" id="_id" placeholder="Id de l'utilisateur à supprimer" name="_id"></div>
+												</div>
+											</div>
+											<button class="btn btn-primary btn-sm" type="submit" formmethod="POST" id="coachDeleteButton">Supprimer le coach</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		{% endblock %}
