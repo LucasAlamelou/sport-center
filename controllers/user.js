@@ -103,35 +103,37 @@ async function userUpdate(req, res) {
 async function userLogin(req, res) {
   try {
     if (!req.body._id || !req.body.password) {
-      return res.json('_id or password missing');
+      return res.status(401).json('_id or password missing');
     }
 
     const User = req.app.get('models').User;
-    const verifyUsername = await User.find({ username: req.body._id });
+    try {
+      const verifyUsername = await User.find({ username: req.body._id });
+      const id = verifyUsername[0]._id;
+      const toVerifyUser = await User.findById(id);
+      const token = decryptPassword(toVerifyUser, req.body.password);
+      if (
+        decryptPassword(toVerifyUser, req.body.password) === 'Password invalid.'
+      ) {
+        return res.status(401).json('Mot de passe incorrect');
+      }
 
-    const id = verifyUsername[0]._id;
-    const toVerifyUser = await User.findById(id);
-    if (!toVerifyUser) {
-      return 'No user found in bdd';
-    }
-    const token = decryptPassword(toVerifyUser, req.body.password);
-    if (!decryptPassword(toVerifyUser, req.body.password)) {
-      res.json('Error on your id or password');
-    }
+      req.session.authenticated = true;
+      req.session.user = id;
+      req.session.token = toVerifyUser.token;
+      req.session.role = toVerifyUser.role;
 
-    req.session.authenticated = true;
-    req.session.user = id;
-    req.session.token = toVerifyUser.token;
-    req.session.role = toVerifyUser.role;
-
-    if (toVerifyUser.role === 'customer') {
-      res.redirect('/customerHomePage');
-    }
-    if (toVerifyUser.role === 'manager') {
-      res.redirect('/usersManager');
-    }
-    if (toVerifyUser.role === 'coach') {
-      res.redirect('/coach');
+      if (toVerifyUser.role === 'customer') {
+        return res.json('/customerHomePage');
+      }
+      if (toVerifyUser.role === 'manager') {
+        return res.json('/usersManager');
+      }
+      if (toVerifyUser.role === 'coach') {
+        return res.json('/coach');
+      }
+    } catch {
+      return res.status(401).json('Utilisateur non trouvé');
     }
   } catch (error) {
     res.json(error.message);

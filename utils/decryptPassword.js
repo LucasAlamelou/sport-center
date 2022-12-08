@@ -8,7 +8,6 @@ function decryptPassword({ salt, hash, token }, password) {
   if (hash === toCompareHash) {
     return { token };
   }
-
   return 'Password invalid.';
 }
 

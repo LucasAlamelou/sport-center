@@ -151,7 +151,21 @@
 							</div>
 						</nav>
 
-
+						<div class="modal fade" tabindex="-1" id="modal-global" style="top:50vh">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="btn-close" aria-label="Close" onclick="closeModal()"></button>
+									</div>
+									<div class="modal-body" id="modal-body-insert">
+										<p>Tu peux inserer quelque chose ici</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+									</div>
+								</div>
+							</div>
+						</div>
 						{% block body %}{% endblock %}
 
 					</div>

@@ -32,6 +32,7 @@ async function coachs(req, res) {
     }
     const session = req.session;
     if (session && session.authenticated) {
+      req.session.coachId = CustomerInfo[0]._id;
       res.render('profile', { CustomerInfo, role, SlotList });
     }
   } else {
@@ -97,17 +98,21 @@ async function coachUpdate(req, res) {
       return res.json("Vous n'est pas autorisé.");
     }
     const Coach = req.app.get('models').Coach;
-    const ToModifyCoach = await Coach.findById(req.session.user);
+    const ToModifyCoach = await Coach.findById(req.session.coachId);
     const toModifyKeys = Object.keys(req.body);
     for (const key of toModifyKeys) {
       if (req.body[key] !== '') {
-        ToModifyUser[key] = req.body[key];
+        ToModifyCoach[key] = req.body[key];
       } else {
-        ToModifyUser[key] = ToModifyCoach[key];
+        ToModifyCoach[key] = ToModifyCoach[key];
       }
     }
-    await ToModifyCoach.save();
-    res.redirect('/coach');
+    try {
+      await ToModifyCoach.save();
+      return res.json(true);
+    } catch (error) {
+      return res.json(false);
+    }
   } catch (error) {
     res.json(error.message);
   }
